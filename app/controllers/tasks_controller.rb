@@ -2,14 +2,21 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   
   def index
-      @tasks = Task.all.page(params[:page]).per(5)
+   if logged_in?
+     @tasks = current_user.tasks.all.page(params[:page]).per(5)
+   else
+     
+   end
   end
 
   def show
+  
   end
 
   def new
-      @task = Task.new
+      @task = Task.new(
+       content: params[:content],
+        )
   end
 
   def create
@@ -53,6 +60,6 @@ class TasksController < ApplicationController
   end
   
   def task_params
-    params.require(:task).permit(:content, :status)
+    params.require(:task).permit(:content, :status, :user_id)
   end
 end
