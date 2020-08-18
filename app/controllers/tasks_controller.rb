@@ -16,9 +16,7 @@ class TasksController < ApplicationController
   end
 
   def new
-      @task = Task.new(
-       content: params[:content],
-        )
+      @task = Task.new
   end
 
   def create
@@ -73,8 +71,8 @@ class TasksController < ApplicationController
     end
     
     def correct_user
-      @mtask = current_user.tasks.find_by(id: params[:id])
-      unless @mtask
+      @task = current_user.tasks.find_by(id: params[:id])
+      unless @task
         redirect_to root_url
       end
     end
