@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
-  before_action :logged_in_user, only: [:show, :edit, :update, :destroy]
+  before_action :logged_in_user
+  before_action :correct_user, only: [:show, :edit, :update, :destroy]
   
   def index
    if logged_in?
@@ -68,6 +69,13 @@ class TasksController < ApplicationController
       unless logged_in?
         flash[:danger] = "Please log in."
         redirect_to login_url
+      end
+    end
+    
+    def correct_user
+      @mtask = current_user.tasks.find_by(id: params[:id])
+      unless @mtask
+        redirect_to root_url
       end
     end
 end
